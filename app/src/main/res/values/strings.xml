@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">Monstropedia</string>
+    <string name="api_url">https://www.dnd5eapi.co/api/monsters/</string>
+    <string name="titulo">Monstropedia</string>;
+    <string name="hint">nome do monstro. Ex.: Ancient Red Dragon</string>;
+    <string name="btnPesquisar">Pesquisar</string>
+    <string name="mpt">empty </string>
+    <string name="name">Nome Monstro</string>
+    <string name="sizetypealign">size type, align</string>
+    <string name="AC">Armor Class</string>
+    <string name="HP">Hit Points</string>
+    <string name="Speed">Speed</string>"
+    <string name="STR">STR</string>
+    <string name="DEX">DEX</string>
+    <string name="CON">CON</string>
+    <string name="INT">INT</string>
+    <string name="WIS">WIS</string>
+    <string name="CHA">CHA</string>
+    <string name="saving_throw">Saving Throws</string>
+    <string name="skill">Skills</string>
+    <string name="damage_immunities">Damage Immunities</string>
+    <string name="Senses">Senses</string>
+    <string name="languages">Languages</string>
+    <string name="challenge">Challenge</string>
+</resources>
