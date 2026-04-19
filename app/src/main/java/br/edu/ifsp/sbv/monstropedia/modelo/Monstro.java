@@ -43,16 +43,21 @@ public class Monstro {
     //
     private String image;
 
+    public Monstro() {
+    }
+
     public Monstro(JSONObject json) throws JSONException {
         this.name = json.getString("name");
         this.size = json.getString("size");
         this.type = json.getString("type");
         this.align = json.getString("alignment");
+
         this.AC = json.getJSONArray("armor_class").getJSONObject(0).getInt("value");
         this.ACtype = json.getJSONArray("armor_class").getJSONObject(0).getString("type");
         this.HP = json.getInt("hit_points");
         this.HProll = json.getString("hit_points_roll");
         this.speed = getSpeed(json.getJSONObject("speed"));
+
         this.str = json.getInt("strength");
         this.dex = json.getInt("dexterity");
         this.con = json.getInt("constitution");
@@ -62,12 +67,10 @@ public class Monstro {
 
         this.saving_throw = getSavingThrow(json.getJSONArray("proficiencies"));
         this.skill = getSkill(json.getJSONArray("proficiencies"));
-
         this.damage_vuln = getDamage_vuln(json.getJSONArray("damage_vulnerabilities"));
         this.damage_resi = getDamage_resi(json.getJSONArray("damage_resistances"));
         this.damage_imun = getDamage_imun(json.getJSONArray("damage_immunities"));
         this.condition_imun = getConditionimun(json.getJSONArray("condition_immunities"));
-
         this.senses = getSenses(json.getJSONObject("senses"));
         this.languages = json.getString("languages");
         this.CR = json.getInt("challenge_rating");
@@ -317,6 +320,7 @@ public class Monstro {
         if (image == null || image.isEmpty()) {
             return null;
         }
+        if (image.startsWith("http")) return image;
         return "https://www.dnd5eapi.co" + image;
     }
 

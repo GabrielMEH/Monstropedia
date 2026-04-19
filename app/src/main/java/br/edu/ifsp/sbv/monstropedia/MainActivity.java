@@ -26,11 +26,12 @@ import java.net.URL;
 
 import br.edu.ifsp.sbv.monstropedia.modelo.HttpUtils;
 import br.edu.ifsp.sbv.monstropedia.modelo.Monstro;
+import br.edu.ifsp.sbv.monstropedia.modelo.MonstroDAO;
 
 public class MainActivity extends AppCompatActivity {
 
     private ProgressDialog load;
-
+    private boolean inDB;
     TextInputEditText edNomeMonstro;
     TextView txtNome;
     TextView txtSizeTypeAlign;
@@ -99,44 +100,47 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected Monstro doInBackground(String... params) {
+            String nomeBusca = params[0];
+            MonstroDAO dao = new MonstroDAO(MainActivity.this);
+            //procurar no DB
+            Monstro monstro = dao.findByName(nomeBusca);
+            inDB = true;
 
-            String nomeMonstroBusca = params[0].toLowerCase().replace(" ","-");
-            String urlString = "https://www.dnd5eapi.co/api/2014/monsters/"+nomeMonstroBusca;
+            //se não estiver no DB, procurar na API
+            if (monstro == null) {
+                String nomeMonstroApi = nomeBusca.toLowerCase().replace(" ","-");
+                String urlString = "https://www.dnd5eapi.co/api/2014/monsters/"+nomeMonstroApi;
+                inDB = false;
+                try {
 
-            try {
-                String jsonString = HttpUtils.get(urlString);
-                JSONObject jsonObject = new JSONObject(jsonString);
-                return new Monstro(jsonObject);
-            } catch (Exception e) {
-                Log.e(TAG, "Erro na requisição: ", e);
-                return null;
+                    //pega json object pela API
+                    String jsonString = HttpUtils.get(urlString);
+                    JSONObject jsonObject = new JSONObject(jsonString);
+                    monstro = new Monstro(jsonObject);
+
+                    //insere no DB
+                    dao.insert(monstro);
+
+                } catch (Exception e) {
+                    Log.e(TAG, "Erro na requisição ou inserção: ", e);
+                }
             }
-
+            
+            return monstro;
         }
 
         @Override
         protected void onPostExecute(Monstro monstro) {
 
+            if(inDB == true)
+                Toast.makeText(MainActivity.this,"Monstro no DB!",Toast.LENGTH_LONG).show();
+            else
+                Toast.makeText(MainActivity.this,"Monstro na API!",Toast.LENGTH_LONG).show();
+
             if(monstro !=null)
             {
-                Toast.makeText(MainActivity.this,String.valueOf(monstro.getName()),Toast.LENGTH_LONG).show();
-                txtNome.setText(monstro.getName());
-                txtSizeTypeAlign.setText(monstro.getSizeTypeAlign());
-                txtACvalue.setText(monstro.getACACtype());
-                txtHPvalue.setText(monstro.getHPHProll());
-                txtSPDvalue.setText(monstro.getSpeed());
-                txtStr.setText(monstro.getStr2());
-                txtDex.setText(monstro.getDex2());
-                txtCon.setText(monstro.getCon2());
-                txtIntl.setText(monstro.getIntl2());
-                txtWis.setText(monstro.getWis2());
-                txtCha.setText(monstro.getCha2());
-                txtSavingThrow.setText(monstro.getSaving_throw());
-                txtSkill.setText(monstro.getSkill());
-                txtDamageImun.setText(monstro.getDamage_imun());
-                txtSenses.setText(monstro.getSenses());
-                txtLanguages.setText(monstro.getLanguages());
-                txtChallenge.setText(monstro.getCRXP());
+                //exibir dados
+                setTxtMonstro(monstro);
                 if(monstro.getImage()!=null)
                 {
                     new DownloadImageTask(ivMonstro)
@@ -145,27 +149,54 @@ public class MainActivity extends AppCompatActivity {
             }
             else {
                 Toast.makeText(MainActivity.this,"Nenhum monstro encontrado!",Toast.LENGTH_LONG).show();
-                txtNome.setText("");
-                txtSizeTypeAlign.setText("");
-                txtACvalue.setText("");
-                txtHPvalue.setText("");
-                txtSPDvalue.setText("");
-                txtStr.setText("");
-                txtDex.setText("");
-                txtCon.setText("");
-                txtIntl.setText("");
-                txtWis.setText("");
-                txtCha.setText("");
-                txtSavingThrow.setText("");
-                txtSkill.setText("");
-                txtDamageImun.setText("");
-                txtSenses.setText("");
-                txtLanguages.setText("");
-                txtChallenge.setText("");
+                //limpar dados
+                clear();
             }
 
             load.dismiss();
         }
+
+        public void setTxtMonstro (Monstro monstro) {
+            txtNome.setText(monstro.getName());
+            txtSizeTypeAlign.setText(monstro.getSizeTypeAlign());
+            txtACvalue.setText(monstro.getACACtype());
+            txtHPvalue.setText(monstro.getHPHProll());
+            txtSPDvalue.setText(monstro.getSpeed());
+            txtStr.setText(monstro.getStr2());
+            txtDex.setText(monstro.getDex2());
+            txtCon.setText(monstro.getCon2());
+            txtIntl.setText(monstro.getIntl2());
+            txtWis.setText(monstro.getWis2());
+            txtCha.setText(monstro.getCha2());
+            txtSavingThrow.setText(monstro.getSaving_throw());
+            txtSkill.setText(monstro.getSkill());
+            txtDamageImun.setText(monstro.getDamage_imun());
+            txtSenses.setText(monstro.getSenses());
+            txtLanguages.setText(monstro.getLanguages());
+            txtChallenge.setText(monstro.getCRXP());
+        }
+
+        public void clear() {
+            txtNome.setText("");
+            txtSizeTypeAlign.setText("");
+            txtACvalue.setText("");
+            txtHPvalue.setText("");
+            txtSPDvalue.setText("");
+            txtStr.setText("");
+            txtDex.setText("");
+            txtCon.setText("");
+            txtIntl.setText("");
+            txtWis.setText("");
+            txtCha.setText("");
+            txtSavingThrow.setText("");
+            txtSkill.setText("");
+            txtDamageImun.setText("");
+            txtSenses.setText("");
+            txtLanguages.setText("");
+            txtChallenge.setText("");
+            ivMonstro.setImageResource(0);
+        }
+
     }
 
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
