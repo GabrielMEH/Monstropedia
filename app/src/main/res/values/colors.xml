@@ -4,4 +4,12 @@
     <color name="white">#FFFFFFFF</color>
     <color name="red">#8C1605</color>
     <color name="dnd_red">#58180D</color>
+    <color name="name_background">#4D2C1C</color>
+    <color name="CR">#855138</color>
+    <color name="light_bg">#E8E0D0</color>
+
+    <color name="cr_easy">#4CAF50</color>
+    <color name="cr_medium">#FFC107</color>
+    <color name="cr_hard">#F44336</color>
+    <color name="cr_impossible">#B60FD0</color>
 </resources>

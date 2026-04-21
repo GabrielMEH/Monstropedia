@@ -6,6 +6,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MonstroDAO extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "monstropedia.db";
@@ -125,36 +128,63 @@ public class MonstroDAO extends SQLiteOpenHelper {
 
         Monstro monstro = null;
         if (cursor != null && cursor.moveToFirst()) {
-            monstro = new Monstro();
-            monstro.setName(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NAME)));
-            monstro.setSize(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_SIZE)));
-            monstro.setType(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TYPE)));
-            monstro.setAlign(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_ALIGN)));
-            monstro.setAC(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_AC)));
-            monstro.setACtype(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_ACTYPE)));
-            monstro.setHP(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_HP)));
-            monstro.setHProll(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_HPROLL)));
-            monstro.setSpeed(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_SPEED)));
-            monstro.setStr(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_STR)));
-            monstro.setDex(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_DEX)));
-            monstro.setCon(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_CON)));
-            monstro.setIntl(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_INTL)));
-            monstro.setWis(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_WIS)));
-            monstro.setCha(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_CHA)));
-            monstro.setSaving_throw(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_SAVING_THROW)));
-            monstro.setSkill(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_SKILL)));
-            monstro.setDamage_vuln(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DAMAGE_VULN)));
-            monstro.setDamage_resi(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DAMAGE_RESI)));
-            monstro.setDamage_imun(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DAMAGE_IMUN)));
-            monstro.setCondition_immunities(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CONDITION_IMUN)));
-            monstro.setSenses(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_SENSES)));
-            monstro.setLanguages(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_LANGUAGES)));
-            monstro.setCR(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_CR)));
-            monstro.setXP(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_XP)));
-            monstro.setImage(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_IMAGE)));
+            monstro = cursorToMonstro(cursor);
         }
         if (cursor != null) cursor.close();
         db.close();
+        return monstro;
+    }
+
+    public List<Monstro> listAll() {
+        List<Monstro> lista = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_MONSTROS, null, null, null, null, null, COLUMN_NAME + " ASC");
+
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                lista.add(cursorToMonstro(cursor));
+            } while (cursor.moveToNext());
+        }
+        if (cursor != null) cursor.close();
+        db.close();
+        return lista;
+    }
+
+    public boolean deletar(String name) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int rowsAffected = db.delete(TABLE_MONSTROS, COLUMN_NAME + "=?", new String[]{name});
+        db.close();
+        return rowsAffected > 0;
+    }
+
+    private Monstro cursorToMonstro(Cursor cursor) {
+        Monstro monstro = new Monstro();
+        monstro.setName(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NAME)));
+        monstro.setSize(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_SIZE)));
+        monstro.setType(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TYPE)));
+        monstro.setAlign(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_ALIGN)));
+        monstro.setAC(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_AC)));
+        monstro.setACtype(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_ACTYPE)));
+        monstro.setHP(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_HP)));
+        monstro.setHProll(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_HPROLL)));
+        monstro.setSpeed(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_SPEED)));
+        monstro.setStr(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_STR)));
+        monstro.setDex(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_DEX)));
+        monstro.setCon(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_CON)));
+        monstro.setIntl(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_INTL)));
+        monstro.setWis(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_WIS)));
+        monstro.setCha(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_CHA)));
+        monstro.setSaving_throw(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_SAVING_THROW)));
+        monstro.setSkill(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_SKILL)));
+        monstro.setDamage_vuln(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DAMAGE_VULN)));
+        monstro.setDamage_resi(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DAMAGE_RESI)));
+        monstro.setDamage_imun(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DAMAGE_IMUN)));
+        monstro.setCondition_immunities(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CONDITION_IMUN)));
+        monstro.setSenses(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_SENSES)));
+        monstro.setLanguages(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_LANGUAGES)));
+        monstro.setCR(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_CR)));
+        monstro.setXP(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_XP)));
+        monstro.setImage(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_IMAGE)));
         return monstro;
     }
 }
