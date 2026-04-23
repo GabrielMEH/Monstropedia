@@ -25,6 +25,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="-4dp"
         android:text="@string/mpt"
         android:textStyle="italic"
         app:layout_constraintStart_toStartOf="parent"
@@ -325,6 +326,52 @@
         app:layout_constraintTop_toTopOf="@+id/txtSkillLabel" />
 
     <TextView
+        android:id="@+id/txtDamageVulnLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="@string/damage_vulnerabilities"
+        android:textColor="@color/dnd_red"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtSkill" />
+
+    <TextView
+        android:id="@+id/txtDamageVuln"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/mpt"
+        android:textColor="@color/dnd_red"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/txtDamageVulnLabel"
+        app:layout_constraintTop_toTopOf="@+id/txtDamageVulnLabel" />
+
+    <TextView
+        android:id="@+id/txtDamageResiLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="@string/damage_resistances"
+        android:textColor="@color/dnd_red"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtDamageVuln" />
+
+    <TextView
+        android:id="@+id/txtDamageResi"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/mpt"
+        android:textColor="@color/dnd_red"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/txtDamageResiLabel"
+        app:layout_constraintTop_toTopOf="@+id/txtDamageResiLabel" />
+
+    <TextView
         android:id="@+id/txtDamageImunLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -333,7 +380,7 @@
         android:textColor="@color/dnd_red"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtSkill" />
+        app:layout_constraintTop_toBottomOf="@+id/txtDamageResi" />
 
     <TextView
         android:id="@+id/txtDamageImun"
@@ -348,6 +395,29 @@
         app:layout_constraintTop_toTopOf="@+id/txtDamageImunLabel" />
 
     <TextView
+        android:id="@+id/txtConditionImunLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="@string/condition_immunities"
+        android:textColor="@color/dnd_red"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtDamageImun" />
+
+    <TextView
+        android:id="@+id/txtConditionImun"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/mpt"
+        android:textColor="@color/dnd_red"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/txtConditionImunLabel"
+        app:layout_constraintTop_toTopOf="@+id/txtConditionImunLabel" />
+
+    <TextView
         android:id="@+id/txtSensesLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -356,7 +426,7 @@
         android:textColor="@color/dnd_red"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtDamageImun" />
+        app:layout_constraintTop_toBottomOf="@+id/txtConditionImun" />
 
     <TextView
         android:id="@+id/txtSenses"
@@ -430,14 +500,20 @@
 
     <ImageView
         android:id="@+id/ivMonster"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="64dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="64dp"
         android:layout_marginBottom="16dp"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/viewSeparator4"
+        app:layout_constraintVertical_bias="0.0"
         tools:srcCompat="@tools:sample/avatars" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

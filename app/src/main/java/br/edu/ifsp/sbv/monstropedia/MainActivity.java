@@ -91,7 +91,10 @@ public class MainActivity extends AppCompatActivity {
         TextView txtCha = dialogView.findViewById(R.id.txtCha);
         TextView txtSavingThrow = dialogView.findViewById(R.id.txtSavingThrow);
         TextView txtSkill = dialogView.findViewById(R.id.txtSkill);
+        TextView txtDamageVuln = dialogView.findViewById(R.id.txtDamageVuln);
+        TextView txtDamageResi = dialogView.findViewById(R.id.txtDamageResi);
         TextView txtDamageImun = dialogView.findViewById(R.id.txtDamageImun);
+        TextView txtConditionImun = dialogView.findViewById(R.id.txtConditionImun);
         TextView txtSenses = dialogView.findViewById(R.id.txtSenses);
         TextView txtLanguages = dialogView.findViewById(R.id.txtLanguages);
         TextView txtChallenge = dialogView.findViewById(R.id.txtChallenge);
@@ -99,21 +102,27 @@ public class MainActivity extends AppCompatActivity {
 
         txtNome.setText(monstro.getName());
         txtSizeTypeAlign.setText(monstro.getSizeTypeAlign());
+
         txtACvalue.setText(monstro.getACACtype());
         txtHPvalue.setText(monstro.getHPHProll());
         txtSPDvalue.setText(monstro.getSpeed());
+
         txtStr.setText(monstro.getStr2());
         txtDex.setText(monstro.getDex2());
         txtCon.setText(monstro.getCon2());
         txtIntl.setText(monstro.getIntl2());
         txtWis.setText(monstro.getWis2());
         txtCha.setText(monstro.getCha2());
-        txtSavingThrow.setText(monstro.getSaving_throw());
-        txtSkill.setText(monstro.getSkill());
-        txtDamageImun.setText(monstro.getDamage_imun());
-        txtSenses.setText(monstro.getSenses());
-        txtLanguages.setText(monstro.getLanguages());
-        txtChallenge.setText(monstro.getCRXP());
+
+        setField(txtSavingThrow, dialogView.findViewById(R.id.txtSavingThrowLabel), monstro.getSaving_throw());
+        setField(txtSkill, dialogView.findViewById(R.id.txtSkillLabel), monstro.getSkill());
+        setField(txtDamageVuln, dialogView.findViewById(R.id.txtDamageVulnLabel), monstro.getDamage_vuln());
+        setField(txtDamageResi, dialogView.findViewById(R.id.txtDamageResiLabel), monstro.getDamage_resi());
+        setField(txtDamageImun, dialogView.findViewById(R.id.txtDamageImunLabel), monstro.getDamage_imun());
+        setField(txtConditionImun, dialogView.findViewById(R.id.txtConditionImunLabel), monstro.getCondition_immunities());
+        setField(txtSenses, dialogView.findViewById(R.id.txtSensesLabel), monstro.getSenses());
+        setField(txtLanguages, dialogView.findViewById(R.id.txtLanguagesLabel), monstro.getLanguages());
+        setField(txtChallenge, dialogView.findViewById(R.id.txtChallengeLabel), monstro.getCRXP());
 
         if (monstro.getImage() != null) {
             new DownloadImageTask(ivMonstro).execute(monstro.getImage());
@@ -126,6 +135,17 @@ public class MainActivity extends AppCompatActivity {
         
         if (dialog.getWindow() != null) {
             dialog.getWindow().setBackgroundDrawableResource(R.drawable.background);
+        }
+    }
+
+    private void setField(TextView txtValue, View label, String value) {
+        if (value == null || value.isEmpty()) {
+            txtValue.setVisibility(View.GONE);
+            label.setVisibility(View.GONE);
+        } else {
+            txtValue.setVisibility(View.VISIBLE);
+            label.setVisibility(View.VISIBLE);
+            txtValue.setText(value);
         }
     }
 

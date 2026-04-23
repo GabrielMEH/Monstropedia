@@ -67,10 +67,12 @@ public class Monstro {
 
         this.saving_throw = getSavingThrow(json.getJSONArray("proficiencies"));
         this.skill = getSkill(json.getJSONArray("proficiencies"));
-        this.damage_vuln = getDamage_vuln(json.getJSONArray("damage_vulnerabilities"));
-        this.damage_resi = getDamage_resi(json.getJSONArray("damage_resistances"));
-        this.damage_imun = getDamage_imun(json.getJSONArray("damage_immunities"));
-        this.condition_imun = getConditionimun(json.getJSONArray("condition_immunities"));
+        
+        this.damage_vuln = getDamage_vuln(json.optJSONArray("damage_vulnerabilities"));
+        this.damage_resi = getDamage_resi(json.optJSONArray("damage_resistances"));
+        this.damage_imun = getDamage_imun(json.optJSONArray("damage_immunities"));
+        this.condition_imun = getConditionimun(json.optJSONArray("condition_immunities"));
+        
         this.senses = getSenses(json.getJSONObject("senses"));
         this.languages = json.getString("languages");
         this.CR = json.getInt("challenge_rating");
@@ -124,22 +126,31 @@ public class Monstro {
     }
 
     private String getDamage_vuln(JSONArray json) throws JSONException {
+        if (json == null) return "";
         return joinJsonArray(json);
     }
 
     private String getDamage_resi(JSONArray json) throws JSONException {
+        if (json == null) return "";
         return joinJsonArray(json);
     }
 
     private String getDamage_imun(JSONArray json) throws JSONException {
+        if (json == null) return "";
         return joinJsonArray(json);
     }
 
     private String getConditionimun(JSONArray json) throws JSONException {
+        if (json == null) return "";
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < json.length(); i++) {
             if (sb.length() > 0) sb.append(", ");
-            sb.append(json.getJSONObject(i).getString("name"));
+            Object item = json.get(i);
+            if (item instanceof JSONObject) {
+                sb.append(((JSONObject) item).getString("name"));
+            } else {
+                sb.append(item.toString());
+            }
         }
         return sb.toString();
     }
@@ -157,6 +168,7 @@ public class Monstro {
     }
 
     private String joinJsonArray(JSONArray jsonArray) throws JSONException {
+        if (jsonArray == null) return "";
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < jsonArray.length(); i++) {
             if (sb.length() > 0) sb.append(", ");
@@ -190,8 +202,7 @@ public class Monstro {
     public void setACtype(String ACtype) { this.ACtype = ACtype; }
 
     public String getACACtype() {
-        String ac = String.valueOf(this.AC) + " (" + this.ACtype + ")";
-        return ac;
+        return this.AC + " (" + this.ACtype + ")";
     }
 
     public int getHP() { return HP; }
@@ -203,8 +214,7 @@ public class Monstro {
     public void setHProll(String HProll) { this.HProll = HProll; }
 
     public String getHPHProll() {
-        String hp = String.valueOf(this.HP) + " (" + this.HProll + ")";
-        return hp;
+        return this.HP + " (" + this.HProll + ")";
     }
 
     public String getSpeed() { return speed; }
@@ -215,8 +225,7 @@ public class Monstro {
 
     public String getStr2() {
         String mod = String.valueOf((this.str-10)/2);
-        String str = String.valueOf(this.str) + " (" + mod + ")";
-        return str;
+        return this.str + " (" + mod + ")";
     }
 
     public void setStr(int str) { this.str = str; }
@@ -225,8 +234,7 @@ public class Monstro {
 
     public String getDex2() {
         String mod = String.valueOf((this.dex-10)/2);
-        String str = String.valueOf(this.dex) + " (" + mod + ")";
-        return str;
+        return this.dex + " (" + mod + ")";
     }
 
     public void setDex(int dex) { this.dex = dex; }
@@ -235,8 +243,7 @@ public class Monstro {
 
     public String getCon2() {
         String mod = String.valueOf((this.con-10)/2);
-        String str = String.valueOf(this.con) + " (" + mod + ")";
-        return str;
+        return this.con + " (" + mod + ")";
     }
 
     public void setCon(int con) { this.con = con; }
@@ -245,8 +252,7 @@ public class Monstro {
 
     public String getIntl2() {
         String mod = String.valueOf((this.intl-10)/2);
-        String str = String.valueOf(this.intl) + " (" + mod + ")";
-        return str;
+        return this.intl + " (" + mod + ")";
     }
 
     public void setIntl(int intl) { this.intl = intl; }
@@ -255,8 +261,7 @@ public class Monstro {
 
     public String getWis2() {
         String mod = String.valueOf((this.wis-10)/2);
-        String str = String.valueOf(this.wis) + " (" + mod + ")";
-        return str;
+        return this.wis + " (" + mod + ")";
     }
 
     public void setWis(int wis) { this.wis = wis; }
@@ -265,8 +270,7 @@ public class Monstro {
 
     public String getCha2() {
         String mod = String.valueOf((this.cha-10)/2);
-        String str = String.valueOf(this.cha) + " (" + mod + ")";
-        return str;
+        return this.cha + " (" + mod + ")";
     }
 
     public void setCha(int cha) { this.cha = cha; }
@@ -312,8 +316,7 @@ public class Monstro {
     public void setXP(int XP) { this.XP = XP; }
 
     public String getCRXP() {
-        String cr = String.valueOf(this.CR) + " (" + this.XP + " XP)";
-        return cr;
+        return this.CR + " (" + this.XP + " XP)";
     }
 
     public String getImage() {
